@@ -6,6 +6,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.yorm.enums.Currency;
+import org.yorm.exceptions.MoreThanOneInfantException;
 import org.yorm.pages.SpiceJetPage;
 
 import java.time.Duration;
@@ -20,6 +21,52 @@ public class SpiceJetTests {
         driver.get("https://www.spicejet.com/");
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.manage().window().maximize();
+    }
+
+    @Test
+    public void changeAdultPassengersQnt(){
+        SpiceJetPage page = new SpiceJetPage(driver);
+        page.getPassengerMenu().click();
+        Assert.assertTrue(page.getPassengerMenu().isPopUpMenuOpened());
+        page.getPassengerMenu().setAdultQuantity(3);
+        Assert.assertEquals(3, page.getPassengerMenu().getCurrentAdultsQnt());
+        page.getPassengerMenu().setAdultQuantity(2);
+        Assert.assertEquals(2, page.getPassengerMenu().getCurrentAdultsQnt());
+        page.getPassengerMenu().clickDoneBtn();
+        Assert.assertTrue(page.getPassengerMenu().isPopUpMenuClosed());
+
+    }
+
+    @Test
+    public void changeChildrenPassengersQnt(){
+        SpiceJetPage page = new SpiceJetPage(driver);
+        page.getPassengerMenu().click();
+        Assert.assertTrue(page.getPassengerMenu().isPopUpMenuOpened());
+        page.getPassengerMenu().setChildrenQuantity(4);
+        Assert.assertEquals(4, page.getPassengerMenu().getCurrentChildrenQnt());
+        page.getPassengerMenu().setChildrenQuantity(1);
+        Assert.assertEquals(1, page.getPassengerMenu().getCurrentChildrenQnt());
+        page.getPassengerMenu().clickDoneBtn();
+        Assert.assertTrue(page.getPassengerMenu().isPopUpMenuClosed());
+    }
+
+    @Test(expectedExceptions = MoreThanOneInfantException.class)
+    public void infantPassengersQntException() {
+        SpiceJetPage page = new SpiceJetPage(driver);
+        page.getPassengerMenu().click();
+        page.getPassengerMenu().setInfantQuantity(2);
+    }
+
+    @Test
+    public void changeInfantPassengersQnt() {
+        SpiceJetPage page = new SpiceJetPage(driver);
+        page.getPassengerMenu().click();
+        page.getPassengerMenu().setInfantQuantity(1);
+        Assert.assertEquals(1, page.getPassengerMenu().getCurrentInfantQnt());
+        page.getPassengerMenu().setInfantQuantity(0);
+        Assert.assertEquals(0, page.getPassengerMenu().getCurrentInfantQnt());
+        page.getPassengerMenu().clickDoneBtn();
+        Assert.assertTrue(page.getPassengerMenu().isPopUpMenuClosed());
     }
 
     @Test

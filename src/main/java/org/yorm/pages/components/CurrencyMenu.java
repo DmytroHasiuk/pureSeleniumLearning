@@ -7,12 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.yorm.enums.Currency;
 
-public class CurrencyMenu {
-    private String xpath;
-
-    private WebDriver driver;
-
-    private WebDriverWait explicitWait;
+public class CurrencyMenu extends BaseComponent{
 
     private WebElement currentCurrency;
 
@@ -20,22 +15,13 @@ public class CurrencyMenu {
 
 
     public CurrencyMenu(WebDriver driver, WebDriverWait wait) {
-        this.driver = driver;
-        this.explicitWait = wait;
+        super(driver, wait);
         xpath = "//div[@style='flex: 0.3 1 0%; margin-left: 10px;']";
-    }
-
-    public void click(){
-        driver.findElement(By.xpath(getXpath())).click();
     }
 
     public String getCurrentCurrency(){
         currentCurrency =driver.findElement(By.xpath(getXpath() + "//div[@class='css-76zvg2 css-bfa6kz r-homxoj r-ubezar']"));
         return currentCurrency.getText();
-    }
-
-    private String getXpath() {
-        return xpath;
     }
 
     public void clickCurrency(Currency currency){
