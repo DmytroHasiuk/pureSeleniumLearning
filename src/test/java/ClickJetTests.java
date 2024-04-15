@@ -1,3 +1,4 @@
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -8,6 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import org.yorm.enums.Currency;
+import org.yorm.exceptions.NoSuchCountryException;
 import org.yorm.exceptions.NoSuchCurrencyException;
 import org.yorm.pages.ClickJetPage;
 
@@ -17,6 +19,8 @@ public class ClickJetTests {
     WebDriver driver;
 
     private static final Logger LOGGER = LogManager.getLogger(ClickJetTests.class);
+
+    private final String COUNTRY = "India";
 
     @BeforeMethod
     public void setUp(){
@@ -50,6 +54,26 @@ public class ClickJetTests {
         }
         softAssert.assertEquals(Currency.USD.getText(), page.getCurrentCurrencySelected());
         softAssert.assertAll();
+    }
+
+    @Test
+    public void autosuggestionDropdownTest(){
+        ClickJetPage page = new ClickJetPage(driver);
+        Assert.assertTrue(page.isPageOpened());
+        page.typeTextToCountyInput("Ind");
+        try {
+            page.selectCountryFromAutocompleteDropdown(COUNTRY);
+        } catch (NoSuchCountryException e) {
+            LOGGER.error(e.getMessage());
+        }
+        Assert.assertTrue(StringUtils.equalsIgnoreCase(COUNTRY, page.getTextFromCountryInput()));
+        page.typeTextToCountyInput("Brit");
+        try {
+            page.selectCountryFromAutocompleteDropdown(COUNTRY);
+            Assert.fail("Must be no such country in suggestions");
+        } catch (NoSuchCountryException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     @Test
