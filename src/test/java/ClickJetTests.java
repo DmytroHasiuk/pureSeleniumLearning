@@ -107,6 +107,17 @@ public class ClickJetTests {
         softAssert.assertAll();
     }
 
+    @Test
+    public void returnDateEnableTest(){
+        ClickJetPage page = new ClickJetPage(driver);
+        Assert.assertTrue(page.isPageOpened());
+        Assert.assertFalse(page.isReturnDateActive());
+        page.clickRoundTripBtn();
+        Assert.assertTrue(page.isReturnDateActive());
+        page.clickOneWayBtn();
+        Assert.assertFalse(page.isReturnDateActive());
+    }
+
     @AfterMethod
     public void endUp(){
         driver.quit();

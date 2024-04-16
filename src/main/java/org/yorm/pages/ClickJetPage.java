@@ -32,6 +32,12 @@ public class ClickJetPage extends BasePage{
 
     private WebElement unaccompaniedMinorCheckbox;
 
+    private WebElement oneWayRadioBtn;
+
+    private WebElement roundTripBtn;
+
+    private WebElement returnDate;
+
     public ClickJetPage(WebDriver driver) {
         super(driver);
         this.currencyDropdown = explicitWait.until(ExpectedConditions.visibilityOfElementLocated(By.id("ctl00_mainContent_DropDownListCurrency")));
@@ -43,6 +49,8 @@ public class ClickJetPage extends BasePage{
         this.indianArmyForceCheckBox = driver.findElement(By.id("ctl00_mainContent_chk_IndArm"));
         this.studentCheckbox = driver.findElement(By.id("ctl00_mainContent_chk_StudentDiscount"));
         this.unaccompaniedMinorCheckbox = driver.findElement(By.id("ctl00_mainContent_chk_Unmr"));
+        this.oneWayRadioBtn = driver.findElement(By.id("ctl00_mainContent_rbtnl_Trip_0"));
+        this.roundTripBtn = driver.findElement(By.id("ctl00_mainContent_rbtnl_Trip_1"));
     }
 
     public void selectCurrency(Currency currency) throws NoSuchCurrencyException {
@@ -121,5 +129,18 @@ public class ClickJetPage extends BasePage{
 
     public boolean isUnaccompaniedMinorCheckboxSelected(){
         return unaccompaniedMinorCheckbox.isSelected();
+    }
+
+    public void clickOneWayBtn(){
+        oneWayRadioBtn.click();
+    }
+
+    public void clickRoundTripBtn(){
+        roundTripBtn.click();
+    }
+
+    public boolean isReturnDateActive(){
+        returnDate = driver.findElement(By.id("Div1"));
+        return returnDate.getAttribute("style").contains("1");
     }
 }
