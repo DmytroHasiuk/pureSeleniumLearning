@@ -88,6 +88,25 @@ public class ClickJetTests {
         }
     }
 
+    @Test
+    public void checkboxSelectionTest(){
+        ClickJetPage page = new ClickJetPage(driver);
+        Assert.assertTrue(page.isPageOpened());
+        SoftAssert softAssert = new SoftAssert();
+        page.clickFamilyAndFriendsCheckbox();
+        softAssert.assertTrue(page.isFamilyAndFriendsCheckboxSelected(), "Family and friends checkbox is not selected");
+        page.clickIndianArmedForcesCheckbox();
+        softAssert.assertFalse(page.isSeniorCitizenCheckboxSelected(), "Senior citizen checkbox is selected");
+        softAssert.assertTrue(page.isIndianArmedForcesCheckboxSelected(), "Indian armed force checkbox is not selected");
+        page.clickStudentCheckbox();
+        softAssert.assertTrue(page.isStudentCheckboxSelected(), "Student checkbox is not selected");
+        page.clickUnaccompaniedMinorCheckbox();
+        softAssert.assertTrue(page.isUnaccompaniedMinorCheckboxSelected(), "Unaccompanied minor checkbox is not selected");
+        page.clickUnaccompaniedMinorCheckbox();
+        softAssert.assertFalse(page.isUnaccompaniedMinorCheckboxSelected(), "Unaccompanied minor checkbox is selected");
+        softAssert.assertAll();
+    }
+
     @AfterMethod
     public void endUp(){
         driver.quit();
