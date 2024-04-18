@@ -27,7 +27,7 @@ public abstract class BaseComponent {
         this.explicitWait = explicitWait;
     }
 
-    protected String getXpath() {
+    public String getXpath() {
         if (StringUtils.isEmpty(xpath)) try {
             throw new NullXpathException();
         } catch (NullXpathException e) {
@@ -36,7 +36,7 @@ public abstract class BaseComponent {
         return xpath;
     }
 
-    public void click(){
+    public void click() {
         explicitWait.until(ExpectedConditions.elementToBeClickable(By.xpath(getXpath()))).click();
     }
 }
